@@ -6,10 +6,17 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04  # <- versão mais estável
+
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
+
+      - name: Preload upload-artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: preload
+          path: README.md
 
       - name: Python Lint Code Scanning Action
         uses: advanced-security/python-lint-code-scanning-action@v1.1.1
