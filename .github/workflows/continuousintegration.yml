@@ -16,5 +16,16 @@ jobs:
         with:
           linter: pylint
 
+      - name: Run pylint and save report
+        run: |
+          pylint . > pylint-report.txt || true
+
+      - name: Upload lint results
+        uses: actions/upload-artifact@v3
+        with:
+          name: pylint-report
+          path: pylint-report.txt
+
+
 
 
