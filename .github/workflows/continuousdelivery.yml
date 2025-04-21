@@ -3,16 +3,16 @@ name: Continuous Delivery
 on:
   push:
     branches:
-      - main
+      - main  
 
 jobs:
   deliver:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out repository code
+      - name: Checkout do repositório
         uses: actions/checkout@v4
 
-      - name: Simulando Continuous Delivery
+      - name: Upload dos arquivos do projeto
         uses: actions/upload-artifact@v4
         with:
           name: projetozipado
@@ -24,34 +24,35 @@ jobs:
     runs-on: ubuntu-latest
     needs: deliver
     steps:
-      - name: Baixar artefato
+      - name: Baixar artefato gerado
         uses: actions/download-artifact@v4
         with:
           name: projetozipado
 
-      - name: Mostrar arquivos baixados
+      - name: Listar arquivos baixados
         run: ls -R
 
   docker:
     runs-on: ubuntu-latest
     needs: deliver
     steps:
-      - name: Checkout
+      - name: Checkout do repositório
         uses: actions/checkout@v4
 
-      - name: Set up QEMU
+      - name: Configurar QEMU
         uses: docker/setup-qemu-action@v3
 
-      - name: Set up Docker Buildx
+      - name: Configurar Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # - name: Login to Docker Hub
+
+      # - name: Login no Docker Hub
       #   uses: docker/login-action@v3
       #   with:
       #     username: ${{ secrets.DOCKERHUB_USERNAME }}
       #     password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push
+      - name: Build da imagem Docker
         uses: docker/build-push-action@v6
         with:
           context: .
