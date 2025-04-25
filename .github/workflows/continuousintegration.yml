@@ -42,12 +42,11 @@ jobs:
     needs: [build, docker]
     steps:
       - name: Notificar Discord
-        uses: tsickert/discord-webhook@v7
+        uses: Sniddl/discord-comits@v1.6
         with:
-          webhook-url: ${{ secrets.DISCORD_ALERT_JONNAS }}
-          content: |
-            Pull request verificado com sucesso na branch **main**!
-            Código analisado com *pylint* e Docker build finalizado.
+          webhook: ${{ secrets.DISCORD_ALERT_JONNAS }}
+          template: "avatar-with-link"
+          include-extras: true
 
 
 
