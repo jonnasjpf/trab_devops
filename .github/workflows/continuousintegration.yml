@@ -1,4 +1,5 @@
 name: Continuous Integration
+
 on:
   pull_request:
     branches:
@@ -16,20 +17,19 @@ jobs:
         with:
           linter: pylint
 
-
-
   docker:
     runs-on: ubuntu-latest
+    needs: build  # só roda depois do build
     steps:
-      -
-        name: Checkout
+      - name: Checkout
         uses: actions/checkout@v4
-      -
-        name: Set up QEMU
+
+      - name: Set up QEMU
         uses: docker/setup-qemu-action@v4
-      -
-        name: Set up Docker Buildx
+
+      - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v4
+
       - name: Build
         uses: docker/build-push-action@v6
         with:
@@ -39,11 +39,15 @@ jobs:
 
   discord:
     runs-on: ubuntu-latest
+    needs: [build, docker]
     steps:
-    - uses: actions/checkout@v4
-    - name: Run Discord Webhook
-      uses: johnnyhuy/actions-discord-git-webhook@main
-      with:
-        webhook_url: ${{ secrets.DISCORD_ALERT_JONNAS }}
+      - name: Notificar Discord
+        uses: tsickert/discord-webhook@v7
+        with:
+          webhook-url: ${{ secrets.DISCORD_ALERT_JONNAS }}
+          content: |
+            Pull request verificado com sucesso na branch **main**!
+            Código analisado com *pylint* e Docker build finalizado.
 
-        
+
+
