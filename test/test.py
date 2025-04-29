@@ -11,7 +11,7 @@ async def test_root():
 
 
 @pytest.mark.asyncio
-async def test_uncaoteste():
+async def test_funcaoteste():
     with patch('random.randint', return_value=12345):
         result = await funcaoteste()
 
